@@ -5,9 +5,7 @@
  */
 package projectjava;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -15,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author Tran Thi Kim Ngan - CE190411
  */
-public class Assignment {
+public class Assignment implements DateTime{
 
     private ArrayList<Assignment> listAssignment = new ArrayList<>();
     private String assignmentName;

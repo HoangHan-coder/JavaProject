@@ -5,10 +5,12 @@
  */
 package projectjava;
 
+import java.time.LocalDateTime;
+
 /**
  *
- * @author Nguyen Hoang Han - CE192048
+ * @author  Lam Ngoc Diem My - CE190083
  */
 public interface DateTime {
-    
+    int checkDeadline(LocalDateTime now, LocalDateTime deadline);
 }
