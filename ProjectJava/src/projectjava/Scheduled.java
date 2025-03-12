@@ -21,23 +21,31 @@ public class Scheduled extends Assignment {
          this.soundEffect = "Default Sound";
      }
      
-     public String notification(LocalDateTime deadline) {
+     public Scheduled(long delay, String soundEffect) {
+         this.delay = delay;
+         this.soundEffect = soundEffect;
+     }
+     
+     public String notification(LocalDateTime deadline, int checkDeadline) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime notifyTime = deadline.minus(delay, ChronoUnit.HOURS);
-    
-        if (now.isBefore(deadline)) {
-            if (now.isAfter(notifyTime)) {
+
+        if (checkDeadline == 1) {
+            if (now.isAfter(notifyTime) && now.isBefore(deadline)) {
                 soundEffect();
-                return "Reminder: Your deadline is in 1 hour!";
+                return "🔔 Reminder: Your deadline is in " + delay + " hour(s)!";
             }
-            return "No reminder yet.";
+            return "⌛ No reminder yet.";
         } else {
-            return "Deadline is over!";
+            return "❌ Deadline is over!";
         }
     }
-    
+
     public void soundEffect() {
         System.out.println("Playing sound: " + soundEffect + " 🔔");
     }
-
+    
+    public void setSoundEffect(String soundEffect) {
+        this.soundEffect = soundEffect;
+    }
     }
