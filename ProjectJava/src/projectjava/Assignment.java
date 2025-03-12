@@ -17,7 +17,6 @@ public class Assignment {
 
     private ArrayList<Assignment> listAssignment = new ArrayList<>();
     private String assignmentName;
-    private int status;
     private String day;
     private String time;
     private LocalDateTime deadline;  // Thời gian bài tập dưới dạng LocalDateTime
@@ -25,14 +24,13 @@ public class Assignment {
     public Assignment() {
     }
 
-    public Assignment(String assignmentName, int status, String day, String time) {
+    public Assignment(String assignmentName, String day, String time) {
         this.assignmentName = assignmentName;
-        this.status = status; // Nhận giá trị ban đầu
         this.day = day;
         this.time = time;
 
         // Chuyển đổi String thành LocalDateTime 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH-mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         this.deadline = LocalDateTime.parse(day + " " + time, formatter);
     }
 
@@ -50,14 +48,6 @@ public class Assignment {
 
     public void setAssignmentName(String assignmentName) {
         this.assignmentName = assignmentName;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public String getDay() {
@@ -86,30 +76,24 @@ public class Assignment {
 
     // Kiểm tra deadline
     public int checkDeadline() {
+
         LocalDateTime now = LocalDateTime.now(); // Lấy thời gian hiện tại
 
         if (now.isAfter(deadline)) {
-            // Nếu deadline đã qua
-            if (status == 0) {
-                status = -1; // Không hoàn tất vì quá hạn
-                System.out.println("Deadline passed! Assignment not completed.");
-            }
-            if (status == 1) {
-                System.out.println("The deadline has passed, but the assignment is completed.");
-            }
+            return 1; // Hết hạn
+        } else {
+            return 0; // Còn hạn
         }
+    }
 
-        if (now.isBefore(deadline)) {
-            // Nếu deadline chưa đến
-            if (status == 0) {
-                System.out.println("Assignment in progress.");
-            }
-            if (status == 1) {
-                System.out.println("Assignment is complete.");
-            }
+    // Kiem tra rạng thái bài tập dưới dạng chuỗi
+    public String getStatusText() {
+        int status = checkDeadline();
+        if (status == 1) {
+            return "Done";
+        } else {
+            return "Not Done";
         }
-
-        return status;
     }
 
     // Thêm bài tập vào danh sách
@@ -131,17 +115,7 @@ public class Assignment {
         }
     }
 
-    // Phương thức in thông tin bài tập
     public void printInfo() {
-        String statusText;
-        if (status == 1) {
-            statusText = "Done";
-        } else if (status == -1) {
-            statusText = "Not Done ";
-        } else {
-            statusText = "In Progress";
-        }
-        System.out.println("Assignment: " + assignmentName + " | Deadline: " + day + " " + time + " | Status: " + statusText);
-    }
 
+    }
 }
