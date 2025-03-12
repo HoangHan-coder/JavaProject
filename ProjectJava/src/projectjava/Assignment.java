@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author Tran Thi Kim Ngan - CE190411
  */
-public class Assignment implements DateTime{
+public class Assignment {
 
     private ArrayList<Assignment> listAssignment = new ArrayList<>();
     private String assignmentName;
@@ -27,21 +27,89 @@ public class Assignment implements DateTime{
 
     public Assignment(String assignmentName, int status, String day, String time) {
         this.assignmentName = assignmentName;
-        this.status = status;
+        this.status = status; // Nhận giá trị ban đầu
         this.day = day;
         this.time = time;
+
         // Chuyển đổi String thành LocalDateTime 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH-mm");
         this.deadline = LocalDateTime.parse(day + " " + time, formatter);
     }
 
-    // Phương thức kiểm tra deadline (trả về 1 nếu đã hoàn thành, 0 nếu chưa)
+    public ArrayList<Assignment> getListAssignment() {
+        return listAssignment;
+    }
+
+    public void setListAssignment(ArrayList<Assignment> listAssignment) {
+        this.listAssignment = listAssignment;
+    }
+
+    public String getAssignmentName() {
+        return assignmentName;
+    }
+
+    public void setAssignmentName(String assignmentName) {
+        this.assignmentName = assignmentName;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
+    }
+
+    // Kiểm tra deadline
     public int checkDeadline() {
-        if (status == 1) {
-            return 1;
-        } else {
-            return 0;
+        LocalDateTime now = LocalDateTime.now(); // Lấy thời gian hiện tại
+
+        if (now.isAfter(deadline)) {
+            // Nếu deadline đã qua
+            if (status == 0) {
+                status = -1; // Không hoàn tất vì quá hạn
+                System.out.println("Deadline passed! Assignment not completed.");
+            }
+            if (status == 1) {
+                System.out.println("The deadline has passed, but the assignment is completed.");
+            }
         }
+
+        if (now.isBefore(deadline)) {
+            // Nếu deadline chưa đến
+            if (status == 0) {
+                System.out.println("Assignment in progress.");
+            }
+            if (status == 1) {
+                System.out.println("Assignment is complete.");
+            }
+        }
+
+        return status;
     }
 
     // Thêm bài tập vào danh sách
@@ -68,8 +136,10 @@ public class Assignment implements DateTime{
         String statusText;
         if (status == 1) {
             statusText = "Done";
+        } else if (status == -1) {
+            statusText = "Not Done ";
         } else {
-            statusText = "Not Done";
+            statusText = "In Progress";
         }
         System.out.println("Assignment: " + assignmentName + " | Deadline: " + day + " " + time + " | Status: " + statusText);
     }
