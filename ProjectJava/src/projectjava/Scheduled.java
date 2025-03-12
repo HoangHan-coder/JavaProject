@@ -40,8 +40,4 @@ public class Scheduled extends Assignment {
         System.out.println("Playing sound: " + soundEffect + " 🔔");
     }
 
-    @Override
-    public int checkDeadline(LocalDateTime now, LocalDateTime deadline) {
-        throw new UnsupportedOperationException("Unimplemented method 'checkDeadline'");
-    }
     }
